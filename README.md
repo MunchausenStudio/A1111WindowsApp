@@ -20,15 +20,15 @@ Adding some handy menus to complete it
 
 You need NodeJS and Python to use Electron
 
-**Electron :** Currently built with 29.1.5
-**Electron Forge :** Currently built with 7.3.1
-**Electron Forge Plugin fuse :** Otherwise run make won't work
+**Electron :** Currently built with 29.1.5\
+**Electron Forge :** Currently built with 7.3.1\
+**Electron Forge Plugin fuse :** Otherwise run make won't work\
 
-You also need those dependencies for Electron :
-** Node powershell :** Made with 5.0.1
-** Node Pty :** Made with 1.0.0
-** Xterm :** Made with 5.3.0
-** Xterm Addon Fit :** Made with 0.8.0
+You also need those dependencies for Electron :\
+**Node powershell :** Made with 5.0.1\
+**Node Pty :** Made with 1.0.0\
+**Xterm :** Made with 5.3.0\
+**Xterm Addon Fit :** Made with 0.8.0\
 
 Powershell & Xterm should be packaged with the default Electron installation.
 
