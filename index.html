@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="node_modules/xterm/css/xterm.css"/>
+    <title></title>
+    <style>
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden; /* Hide scrollbars */
+        }
+        #terminal-container {
+            width: 100%;
+            height: 100%;
+            display: none; /* Initially hidden */
+        }
+        .xterm {
+            height: 100%;
+            width: 100%;
+        }
+        .xterm-screen {
+            height: 100%;
+            width: 100%;
+        }
+        /* Additional styles for your app */
+        #app-content {
+            width: 100%;
+            height: 100%;
+            background-color: #fff; /* Set background color as needed */
+        }
+        .container .box {
+            position: absolute;
+            width: 7rem;
+            height: 7rem;
+            top: 48%;
+            left: 48%;
+            margin: -3.1rem 0 0 -3.1rem;
+            border-top: solid 3px #2E0C62;
+            border-radius: 50%;
+            animation: rotate 2s infinite linear;
+        }
+
+        .container .box:before {
+            content: "";
+            position: absolute;
+            left: 5px;
+            top: 5px;
+            right: 5px;
+            bottom: 5px;
+            border-top: solid 3px #E6A05C;
+            border-radius: 50%;
+            animation: rotate 2s infinite linear;
+        }
+
+        .container .box:after {
+            position: absolute;
+            content: "";
+            top: 12px;
+            left: 12px;
+            right: 12px;
+            bottom: 12px;
+            border-top: solid 3px #DB1510;
+            border-radius: 50%;
+            animation: rotate 1s infinite linear;
+        }
+
+        @keyframes rotate {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+    </style>
+</head>
+<body>
+<div id="app-content">
+    <div class="container">
+        <div class="box"></div>
+    </div>
+</div>
+
+<div id="terminal-container"></div>
+
+<script src="node_modules/xterm/lib/xterm.js"></script>
+<script src="renderer.js"></script>
+<script>
+    // Check if we're in 'terminal' mode based on the URL query string
+    const queryParams = new URLSearchParams(window.location.search);
+    const isTerminalMode = queryParams.has('terminal');
+
+    if (isTerminalMode) {
+        document.getElementById('app-content').style.display = 'none'; // Hide main content
+        document.getElementById('terminal-container').style.display = 'block'; // Show terminal
+    } else {
+        document.getElementById('app-content').style.display = 'block'; // Show main content
+        document.getElementById('terminal-container').style.display = 'none'; // Hide terminal
+    }
+</script>
+</body>
+</html>

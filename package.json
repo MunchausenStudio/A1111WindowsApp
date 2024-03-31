@@ -1,0 +1,33 @@
+{
+  "name": "stablediffusionwindowsapp",
+  "productName": "Stable Diffusion Windows App",
+  "version": "1.0.1",
+  "description": "Windows App for Stable Diffusion",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron-forge start",
+    "rebuild": "electron-rebuild",
+    "package": "electron-forge package",
+    "make": "electron-forge make"
+  },
+  "author": "Munchausen Studio",
+  "license": "MIT",
+  "devDependencies": {
+    "@electron-forge/cli": "^7.3.1",
+    "@electron-forge/maker-deb": "^7.3.1",
+    "@electron-forge/maker-rpm": "^7.3.1",
+    "@electron-forge/maker-squirrel": "^7.3.1",
+    "@electron-forge/maker-zip": "^7.3.1",
+    "@electron-forge/plugin-auto-unpack-natives": "^7.3.1",
+    "@electron-forge/plugin-fuses": "^7.3.1",
+    "electron": "^29.1.5",
+    "electron-rebuild": "^3.2.9"
+  },
+  "dependencies": {
+    "electron-squirrel-startup": "^1.0.0",
+    "node-powershell": "^5.0.1",
+    "node-pty": "^1.0.0",
+    "xterm": "^5.3.0",
+    "xterm-addon-fit": "^0.8.0"
+  }
+}
