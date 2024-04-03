@@ -10,4 +10,5 @@ window.addEventListener('DOMContentLoaded', () => {
     replaceText(`${dependency}-version`, process.versions[dependency])
   }
 })
+
 console.log('preload.js is loaded');

@@ -1,7 +1,4 @@
-/* TODO : - Add a google prompt window with the added word "Stable Diffusion" automatically added after the text entered into the input
-          - Fix the FitTerminal that isn't fitted upon opening of the window
-		  - Add status info in title bar to check progress
- */
+/* TODO :  */
 
 const {app, BrowserWindow, Menu, shell, dialog, ipcMain} = require('electron')
 const pty = require('node-pty');
@@ -130,6 +127,12 @@ const menuTemplate = [
         ]
     },
     {
+        label: '🔎︎',
+        click: () => {
+            mainWindow.webContents.send('toggle-search-div');
+        }
+    },
+    {
         label: '?',
         submenu: [
             {
@@ -171,9 +174,14 @@ const toggleTerminalWindow = () => {
         // Carbon copy of existing content of the terminal
         terminalWindow.webContents.on('did-finish-load', () => {
             terminalWindow.webContents.send('terminal.incomingData', terminalDataBuffer);
+            // Signal renderer to fit terminal after a slight delay to ensure the content is fully loaded
+            setTimeout(() => {
+                terminalWindow.webContents.send('fit-terminal');
+            }, 100);
         });
     }
 };
+
 // Main Window
 const createWindow = () => {
     mainWindow = new BrowserWindow({
@@ -185,6 +193,7 @@ const createWindow = () => {
             contextIsolation: false,
             webviewTag: true,
             enableRemoteModule: true,
+            spellcheck: false
         },
         title: "Stable Diffusion - A1111 Forge",
         icon:  path.join(__dirname, '20w', '196056941-aace0837-473a-4aa5-9067-505b17797aa1.png')
@@ -200,10 +209,12 @@ const createWindow = () => {
 
     // Create the pseudo-terminal
     const batchFilePath = SDA1111BasePath + '\\Forge\\stable-diffusion-webui-forge\\webui-user.bat'; // Specific Batch start file path
+    //const batchFilePath = 'C:\\Users\\Munchausen\\Documents\\A1111\\ElectronAppSDForge\\Test\\my-electron-app\\test.bat';
     const ptyProcess = pty.spawn('powershell.exe', ['-NoExit', '-Command', batchFilePath], {
         name: 'xterm-color',
         cols: 120,
         rows: 80,
+        //cwd: 'C:\\Users\\Munchausen\\Documents\\A1111\\ElectronAppSDForge\\Test\\my-electron-app',
         cwd: SDA1111BasePath + '\\Forge\\stable-diffusion-webui-forge',
         env: process.env
     });
@@ -224,6 +235,11 @@ const createWindow = () => {
     });
 
     global.ptyProcess = ptyProcess; // Make it accessible for renderer process
+
+    ipcMain.on('update-progress', (event, progressText) => {
+        mainWindow.setTitle(`${progressText} || Stable Diffusion - A1111 Forge`);
+    });
+
 }
 
 app.whenReady().then(() => {
