@@ -112,11 +112,12 @@ ipcRenderer.on('terminal.incomingData', (event, data) => {
         console.log("URL found, attempting to load webview");
         const appContent = document.getElementById('app-content');
         if (appContent) {
-            appContent.innerHTML = '<webview id="webview" preload="preload-webview.js" src="http://127.0.0.1:7860" style="width:100%; height:100%;"></webview>';
+            appContent.innerHTML = '<webview id="webview" preload="preload-webview.js" webpreferences="contextIsolation=no, nodeIntegration=yes" src="http://127.0.0.1:7860" style="width:100%; height:100%;"></webview>';
             const webview = document.getElementById('webview');
             setupWebViewContextMenu(webview);
             webview.addEventListener('dom-ready', () => {
                 // Add action here when UI is loaded
+                //webview.openDevTools();
             });
         }
     }
@@ -125,7 +126,7 @@ ipcRenderer.on('terminal.incomingData', (event, data) => {
 ipcRenderer.on('trigger-webview-load', () => {
     const appContent = document.getElementById('app-content');
     if (appContent) {
-        appContent.innerHTML = '<webview id="webview" preload="preload-webview.js" src="http://127.0.0.1:7860" style="width:100%; height:100%;"></webview>';
+        appContent.innerHTML = '<webview id="webview" preload="preload-webview.js" webpreferences="contextIsolation=no, nodeIntegration=yes" src="http://127.0.0.1:7860" style="width:100%; height:100%;"></webview>';
     }
 });
 // Send data from the terminal to the pseudo-terminal aka handle keystrokes

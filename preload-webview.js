@@ -1,5 +1,6 @@
-const {ipcRenderer} = require('electron');
+const {ipcRenderer, shell} = require('electron');
 console.log('preload-webview.js is loaded');
+console.log('shell:', shell);
 
 // Observing the progress bar in A1111 to display progress in title bar of the app
 window.addEventListener('DOMContentLoaded', () => {
@@ -39,4 +40,14 @@ window.addEventListener('DOMContentLoaded', () => {
     // Start the dynamic checking and observation for both IDs
     checkAndObserve('txt2img_results');
     checkAndObserve('img2img_results');
+});
+// Handle external links opening (opening them in regular default web browser
+document.addEventListener('DOMContentLoaded', () => {
+    document.body.addEventListener('click', function(e) {
+        const target = e.target.closest('a[href^="http"]');
+        if (target) {
+            e.preventDefault(); // Prevent default navigation within the webview
+            shell.openExternal(target.href); // Open the link in the default system browser
+        }
+    }, true); // Use capturing to ensure this runs before any specific link handlers
 });
