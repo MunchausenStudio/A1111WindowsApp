@@ -1,6 +1,5 @@
 const {ipcRenderer, shell} = require('electron');
 console.log('preload-webview.js is loaded');
-console.log('shell:', shell);
 
 // Observing the progress bar in A1111 to display progress in title bar of the app
 window.addEventListener('DOMContentLoaded', () => {
@@ -51,3 +50,32 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, true); // Use capturing to ensure this runs before any specific link handlers
 });
+// Handle Windows notification
+const OriginalNotification = Notification;
+
+Notification = function(title, options) {
+    // Customize the notification title
+    const customTitle = `Job done - ${title}`;
+
+    // Proceed to create the notification with customized options
+    const notificationInstance = new OriginalNotification(customTitle, options);
+
+    // Preserve the original onclick behavior and add additional handling
+    const originalOnClick = notificationInstance.onclick;
+    notificationInstance.onclick = function(event) {
+        // Call the original onclick function, if it exists
+        if (originalOnClick) originalOnClick.apply(this, arguments);
+        console.log('Notification clicked');
+        // Additional behavior: Focus the Electron app window or perform another action
+        ipcRenderer.send('notification-clicked');
+
+        // Optionally, you can focus the Electron window directly here, but it's better
+        // to send an IPC message to the main process for actions that affect the main window
+    };
+
+    return notificationInstance;
+};
+
+Notification.prototype = OriginalNotification.prototype;
+Notification.permission = OriginalNotification.permission;
+Notification.requestPermission = OriginalNotification.requestPermission.bind(OriginalNotification);

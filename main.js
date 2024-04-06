@@ -1,6 +1,6 @@
 /* TODO :  */
 
-const {app, BrowserWindow, Menu, shell, dialog, ipcMain} = require('electron')
+const {app, BrowserWindow, Menu, shell, dialog, ipcMain, Notification} = require('electron')
 const pty = require('node-pty');
 const os = require('os');
 const path = require('node:path')
@@ -15,6 +15,24 @@ ipcMain.on('send-versions', (event, versions) => {
     versionInfo = versions;
 });
 
+// Notification settings
+ipcMain.on('notification-clicked', () => {
+    console.log('Notification clicked received in main process');
+    const mainWindow = BrowserWindow.getAllWindows()[0];
+    if (mainWindow) {
+        if (!mainWindow.isVisible()) mainWindow.show();
+        if (mainWindow.isMinimized()) mainWindow.restore();
+        mainWindow.focus();
+    }
+});
+// Function to check if the current platform is Windows and then set correct App name
+function isWin() {
+    return process.platform === 'win32';
+}
+
+if (isWin()) {
+    app.setAppUserModelId("Stable Diffusion Windows App");
+}
 // Initiate context menu
 ipcMain.on('show-context-menu', (event, menuTemplate) => {
     const menu = Menu.buildFromTemplate(
